@@ -1,7 +1,9 @@
-abstract class TtsRepository {
-  Future<void> speak(String text);
+import 'package:tts_app/presentation/pages/home_page.dart';
 
-  Future<void> stop();
+abstract class TtsRepository {
+  Future<void> speak(String text, TtsProvider provider);
+
+  Future<void> stop(TtsProvider provider);
 
   Stream<void> get onSpeakCompletion;
 }
