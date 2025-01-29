@@ -1,4 +1,0 @@
-enum TtsProviderType {
-  local,
-  elevenLabs,
-}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tts_app/domain/enums/tts_provider_type.dart';
+import 'package:tts_app/domain/enums/tts_voice_type.dart';
 import 'package:tts_app/presentation/bloc/tts_bloc.dart';
 import 'package:tts_app/presentation/bloc/tts_event.dart';
 import 'package:tts_app/presentation/bloc/tts_state.dart';
@@ -52,20 +52,24 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    const Text('Provider: '),
-                    DropdownButton<TtsProviderType>(
-                      value: state.provider,
+                    const Text('Voices: '),
+                    DropdownButton<TtsVoiceType>(
+                      value: state.voiceType,
                       items: const [
                         DropdownMenuItem(
-                          value: TtsProviderType.local,
-                          child: Text('Local TTS'),
+                          value: TtsVoiceType.local,
+                          child: Text('Local'),
                         ),
                         DropdownMenuItem(
-                          value: TtsProviderType.elevenLabs,
-                          child: Text('ElevenLabs'),
+                          value: TtsVoiceType.roger,
+                          child: Text('Roger'),
+                        ),
+                        DropdownMenuItem(
+                          value: TtsVoiceType.sarah,
+                          child: Text('Sarah'),
                         ),
                       ],
-                      onChanged: _onChangedProviderType,
+                      onChanged: _onChangedVoiceType,
                     ),
                   ],
                 ),
@@ -102,10 +106,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _onChangedProviderType(TtsProviderType? type) {
-    if (type != null) {
+  void _onChangedVoiceType(TtsVoiceType? voiceType) {
+    if (voiceType != null) {
       _ttsBloc.add(
-        TtsProviderChanged(type),
+        TtsVoiceChanged(voiceType),
       );
     }
   }

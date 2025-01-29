@@ -1,29 +1,29 @@
 import 'package:equatable/equatable.dart';
-import 'package:tts_app/domain/enums/tts_provider_type.dart';
+import 'package:tts_app/domain/enums/tts_voice_type.dart';
 
 class TtsState extends Equatable {
   final String text;
   final bool isSpeaking;
-  final TtsProviderType provider;
+  final TtsVoiceType voiceType;
 
   const TtsState({
     this.text = '',
     this.isSpeaking = false,
-    this.provider = TtsProviderType.local,
+    this.voiceType = TtsVoiceType.local,
   });
 
   TtsState copyWith({
     String? text,
     bool? isSpeaking,
-    TtsProviderType? provider,
+    TtsVoiceType? voiceType,
   }) {
     return TtsState(
       text: text ?? this.text,
       isSpeaking: isSpeaking ?? this.isSpeaking,
-      provider: provider ?? this.provider,
+      voiceType: voiceType ?? this.voiceType,
     );
   }
 
   @override
-  List<Object> get props => [text, isSpeaking, provider];
+  List<Object> get props => [text, isSpeaking, voiceType];
 }

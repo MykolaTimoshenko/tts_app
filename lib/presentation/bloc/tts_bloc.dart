@@ -8,23 +8,23 @@ import 'tts_event.dart';
 import 'tts_state.dart';
 
 class TtsBloc extends Bloc<TtsEvent, TtsState> {
-  final TtsRepository _repository;
-  final TtsPlayer _player;
+  final TtsRepository _ttsRepository;
+  final TtsPlayer _ttsPlayer;
 
-  StreamSubscription<void>? _playerSub;
-  StreamSubscription<void>? _localTtsSub;
+  StreamSubscription<void>? _playerSubscription;
+  StreamSubscription<void>? _localTtsSubscription;
 
-  TtsBloc(this._repository, this._player) : super(const TtsState()) {
+  TtsBloc(this._ttsRepository, this._ttsPlayer) : super(const TtsState()) {
     on<TtsTextChanged>(_onTextChanged);
     on<TtsSpeakRequested>(_onSpeakRequested);
     on<TtsStopRequested>(_onStopRequested);
-    on<TtsProviderChanged>(_onProviderChanged);
+    on<TtsVoiceChanged>(_onVoiceChanged);
     on<TtsPlaybackCompleted>(_onPlaybackCompleted);
 
-    _playerSub = _player.onPlaybackComplete.listen((_) {
+    _playerSubscription = _ttsPlayer.onPlaybackComplete.listen((_) {
       add(TtsPlaybackCompleted());
     });
-    _localTtsSub = _repository.onSpeakCompletion.listen((_) {
+    _localTtsSubscription = _ttsRepository.onSpeakCompletion.listen((_) {
       add(TtsPlaybackCompleted());
     });
   }
@@ -38,22 +38,22 @@ class TtsBloc extends Bloc<TtsEvent, TtsState> {
     Emitter<TtsState> emit,
   ) async {
     emit(state.copyWith(isSpeaking: true));
-    await _repository.speak(state.text, state.provider);
+    await _ttsRepository.speak(state.text, state.voiceType);
   }
 
   Future<void> _onStopRequested(
     TtsStopRequested event,
     Emitter<TtsState> emit,
   ) async {
-    await _repository.stop(state.provider);
+    await _ttsRepository.stop(state.voiceType);
     emit(state.copyWith(isSpeaking: false));
   }
 
-  void _onProviderChanged(
-    TtsProviderChanged event,
+  void _onVoiceChanged(
+    TtsVoiceChanged event,
     Emitter<TtsState> emit,
   ) {
-    emit(state.copyWith(provider: event.provider));
+    emit(state.copyWith(voiceType: event.voice));
   }
 
   void _onPlaybackCompleted(
@@ -65,8 +65,8 @@ class TtsBloc extends Bloc<TtsEvent, TtsState> {
 
   @override
   Future<void> close() async {
-    await _playerSub?.cancel();
-    await _localTtsSub?.cancel();
+    await _playerSubscription?.cancel();
+    await _localTtsSubscription?.cancel();
     return super.close();
   }
 }

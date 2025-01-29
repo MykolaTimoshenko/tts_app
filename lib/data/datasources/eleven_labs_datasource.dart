@@ -4,12 +4,13 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
 class ElevenLabsDataSource {
-  final String _voiceId = 'iP95p4xoKVk53GoZ742B';
-
-  Future<Uint8List> synthesize(String text) async {
+  Future<Uint8List> synthesize({
+    required String text,
+    required String voiceId,
+  }) async {
     final response = await http.post(
       Uri.parse(
-        'https://api.elevenlabs.io/v1/text-to-speech/$_voiceId',
+        'https://api.elevenlabs.io/v1/text-to-speech/$voiceId',
       ),
       headers: {
         'xi-api-key': 'sk_d3e302a4215b161107952c326e48d44841406459344b8427',
