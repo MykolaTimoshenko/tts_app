@@ -1,0 +1,4 @@
+enum TtsProviderType {
+  local,
+  elevenLabs,
+}

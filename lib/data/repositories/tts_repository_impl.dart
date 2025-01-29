@@ -1,9 +1,9 @@
 import 'package:tts_app/core/services/service_locator.dart';
+import 'package:tts_app/core/utils/tts_player.dart';
 import 'package:tts_app/data/datasources/eleven_labs_datasource.dart';
 import 'package:tts_app/data/datasources/local_tts_datasource.dart';
-import 'package:tts_app/data/datasources/tts_player.dart';
+import 'package:tts_app/domain/enums/tts_provider_type.dart';
 import 'package:tts_app/domain/repositories/tts_repository.dart';
-import 'package:tts_app/presentation/pages/home_page.dart';
 
 class TtsRepositoryImpl implements TtsRepository {
   final _localDataSource = locator<LocalTtsDataSource>();
@@ -11,12 +11,12 @@ class TtsRepositoryImpl implements TtsRepository {
   final _ttsPlayer = locator<TtsPlayer>();
 
   @override
-  Future<void> speak(String text, TtsProvider provider) async {
+  Future<void> speak(String text, TtsProviderType provider) async {
     switch (provider) {
-      case TtsProvider.local:
+      case TtsProviderType.local:
         await _localDataSource.speak(text);
         break;
-      case TtsProvider.elevenLabs:
+      case TtsProviderType.elevenLabs:
         final audioBytes = await _elevenLabsDataSource.synthesize(text);
         await _ttsPlayer.playFromBytes(audioBytes);
         break;
@@ -24,17 +24,17 @@ class TtsRepositoryImpl implements TtsRepository {
   }
 
   @override
-  Future<void> stop(TtsProvider provider) async {
+  Future<void> stop(TtsProviderType provider) async {
     switch (provider) {
-      case TtsProvider.local:
+      case TtsProviderType.local:
         await _localDataSource.stop();
         break;
-      case TtsProvider.elevenLabs:
+      case TtsProviderType.elevenLabs:
         await _ttsPlayer.stop();
         break;
     }
   }
 
   @override
-  Stream<void> get onSpeakCompletion => _localDataSource.onSpeakCompletion;
+  Stream<void> get onSpeakCompletion => _localDataSource.onCompletion;
 }

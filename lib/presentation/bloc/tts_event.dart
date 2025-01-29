@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:tts_app/presentation/pages/home_page.dart';
+import 'package:tts_app/domain/enums/tts_provider_type.dart';
 
 abstract class TtsEvent extends Equatable {
   const TtsEvent();
@@ -22,10 +22,12 @@ class TtsSpeakRequested extends TtsEvent {}
 class TtsStopRequested extends TtsEvent {}
 
 class TtsProviderChanged extends TtsEvent {
-  final TtsProvider provider;
+  final TtsProviderType provider;
 
   const TtsProviderChanged(this.provider);
 
   @override
   List<Object?> get props => [provider];
 }
+
+class TtsPlaybackCompleted extends TtsEvent {}

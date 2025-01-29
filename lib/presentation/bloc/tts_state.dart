@@ -1,21 +1,21 @@
 import 'package:equatable/equatable.dart';
-import 'package:tts_app/presentation/pages/home_page.dart';
+import 'package:tts_app/domain/enums/tts_provider_type.dart';
 
 class TtsState extends Equatable {
   final String text;
   final bool isSpeaking;
-  final TtsProvider provider;
+  final TtsProviderType provider;
 
   const TtsState({
     this.text = '',
     this.isSpeaking = false,
-    this.provider = TtsProvider.local,
+    this.provider = TtsProviderType.local,
   });
 
   TtsState copyWith({
     String? text,
     bool? isSpeaking,
-    TtsProvider? provider,
+    TtsProviderType? provider,
   }) {
     return TtsState(
       text: text ?? this.text,

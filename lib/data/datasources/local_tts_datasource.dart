@@ -7,11 +7,10 @@ class LocalTtsDataSource {
 
   final _completionController = StreamController<void>.broadcast();
 
-  Stream<void> get onSpeakCompletion => _completionController.stream;
+  Stream<void> get onCompletion => _completionController.stream;
 
   LocalTtsDataSource() {
     _flutterTts.awaitSpeakCompletion(true);
-
     _flutterTts.setCompletionHandler(() {
       _completionController.add(null);
     });
@@ -29,5 +28,6 @@ class LocalTtsDataSource {
 
   void dispose() {
     _completionController.close();
+    _flutterTts.stop();
   }
 }
