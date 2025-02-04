@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 if (state.isSpeaking)
                   ElevatedButton(
-                    onPressed: () => _onStopButtonPressed,
+                    onPressed: _onStopButtonPressed,
                     child: const Text('Stop'),
                   ),
               ],
